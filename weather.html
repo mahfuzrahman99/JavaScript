@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Weather App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 99%;
+      height: 89vh;
+      background-image: url("images/weatehr_bg.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    #weather-container {
+      text-align: center;
+    }
+    input {
+      padding: 14px;
+      font-size: 16px;
+      width: 200px;
+      border-radius: 8px;
+      border: none;
+    }
+    input:focus{
+      outline: none;
+    }
+    button {
+      padding: 14px;
+      font-size: 16px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Weather Application</h1>
+
+  <div>
+    <input type="text" id="city" placeholder="Enter city name">
+    <button id="getWeatherBtn">Get Weather</button>
+  </div>
+
+  <div id="weather-container">
+    <h2 id="city-name"></h2>
+    <p id="temperature"></p>
+    <p id="weather-description"></p>
+    <p id="country-name"></p>
+  </div>
+
+  <script>
+    document.getElementById('getWeatherBtn').addEventListener('click', function() {
+      const city = document.getElementById('city').value;
+      const apiKey = '6294cb8c59ad21dc6bdf5432e18b4a18';
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+      const cityName = document.getElementById('city-name');
+      const countryName = document.getElementById('country-name');
+      const temperature = document.getElementById('temperature');
+      const weatherDescription = document.getElementById('weather-description');
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          if (data.cod === 200) {
+            const temperatureCelsius = (data.main.temp - 273.15).toFixed(2);
+            cityName.textContent = `Weather in ${data.name}`;
+            countryName.textContent = `Country: ${data.sys.country}`;
+            temperature.textContent = `Temperature: ${temperatureCelsius} °C`;
+            weatherDescription.textContent = `Description: ${data.weather[0].description}`;
+          } else {
+            cityName.textContent = 'City not found!';
+            temperature.textContent = '';
+            weatherDescription.textContent = '';
+          }
+        })
+        .catch(error => {
+          console.log('Error:', error);
+          cityName.textContent = 'Error fetching weather data!';
+          temperature.textContent = '';
+          weatherDescription.textContent = '';
+        });
+    });
+  </script>
+
+</body>
+</html>
