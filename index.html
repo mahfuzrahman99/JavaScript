@@ -94,10 +94,10 @@
               console.log(data);
               if (data.cod === 200) {
                 const temperatureCelsius = (data.main.temp - 273.15).toFixed(2);
-                cityName.textContent = `Weather in ${data.name}`;
-                countryName.textContent = `Country: ${data.sys.country}`;
-                temperature.textContent = `Temperature: ${temperatureCelsius} °C`;
-                weatherDescription.textContent = `Description: ${data.weather[0].description}`;
+                cityName.textContent = `Weather in ${data.name ? data.name : ""}`;
+                countryName.textContent = `Country: ${data.sys.country ? data.sys.country : "Not found"}`;
+                temperature.textContent = `Temperature: ${temperatureCelsius ? temperatureCelsius : "" } ${temperatureCelsius ? "°C" : ''}`;
+                weatherDescription.textContent = `Description: ${data.weather[0].description ? data.weather[0].description : ""}`;
               } else {
                 cityName.textContent = "Invalid city name";
                 temperature.textContent = "";
